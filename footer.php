@@ -1,5 +1,5 @@
 	<footer>
-		footer goes here
+		&copy;2016 Melissa Cabral for Platt College San Diego
 	</footer>
 </body>
 </html>

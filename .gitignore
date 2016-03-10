@@ -1,6 +1,6 @@
-style.css
 images/
 db-config.php
+*.css
 
 # Windows image file caches
 Thumbs.db
