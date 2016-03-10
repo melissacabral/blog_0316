@@ -5,7 +5,7 @@
 	<title>Melissa's Blog</title>
 	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Lato:400,300,700' rel='stylesheet' type='text/css'>
 
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 <body>
 	<header>
