@@ -9,5 +9,5 @@
 </head>
 <body>
 	<header>
-		<h1>I woke up like this</h1>
+		<h1><a href="index.php">I woke up like this</a></h1>
 	</header>

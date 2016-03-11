@@ -1,10 +1,12 @@
 <aside>
-	<?php //get the titles of up to 5 latest published posts
-	$query_latest = "SELECT title 
-					FROM posts 
-					WHERE is_published = 1
-					ORDER BY date DESC
-					LIMIT 5"; 
+	<?php //get the titles of up to 5 latest published posts, 
+		//and count the comments on each post
+		//@TODO!  change the JOIN so that posts with ZERO comments don't disappear
+	$query_latest = "SELECT title, post_id
+				FROM posts
+				WHERE is_published = 1
+				ORDER BY date DESC
+				LIMIT 5"; 
 	//run it
 	$result_latest = $db->query($query_latest);
 	//check to see if rows were found
@@ -16,7 +18,10 @@
 			<?php 
 			//loop it once per post
 			while( $row_latest = $result_latest->fetch_assoc() ){ ?>
-			<li><a href="#"><?php echo $row_latest['title'] ?></a></li>
+			<li>
+			<a href="#"><?php echo $row_latest['title']; ?></a> 
+			<?php count_comments($row_latest['post_id']); ?>
+			</li>
 			<?php 
 			} //end while 
 			//free the result
@@ -26,10 +31,14 @@
 	<?php 
 	} //end if ?>
 
-	<?php //get all category names in alphabetical order 
-	$query_cats = "SELECT *
-					FROM categories
-					ORDER BY name ASC"; 
+	<?php 
+	//get all category names in alphabetical order
+	//and get a count of the posts in each category 
+	$query_cats = "SELECT c.*, COUNT(*) AS total
+			FROM categories AS c, posts AS p
+			WHERE c.category_id = p.category_id
+			GROUP BY p.category_id
+			ORDER BY c.name ASC"; 
 	//run it
 	$result_cats = $db->query($query_cats);
 	//check to see if rows were found
@@ -41,7 +50,10 @@
 			<?php 
 			//loop it once per post
 			while( $row_cats = $result_cats->fetch_assoc() ){ ?>
-			<li><a href="#"><?php echo $row_cats['name'] ?></a></li>
+			<li>
+				<a href="#"><?php echo $row_cats['name']; ?></a>
+				(<?php echo $row_cats['total']; ?>)
+			</li>
 			<?php 
 			} //end while 
 			//free the result

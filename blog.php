@@ -11,8 +11,7 @@ include('header.php'); /* contains the doctype through </header> */
 			WHERE posts.is_published = 1
 			AND posts.category_id = categories.category_id
 			AND users.user_id = posts.user_id
-			ORDER BY posts.date DESC
-			LIMIT 2";
+			ORDER BY posts.date DESC";
 		//run the query
 	$result = $db->query($query);
 
@@ -25,7 +24,7 @@ include('header.php'); /* contains the doctype through </header> */
 	if( $result->num_rows >= 1 ){		
 		
 		?>
-		<h2>Recent Blog Posts</h2>
+		<h2>My Blog</h2>
 		<?php 
 		//loop through the posts that it found
 		while( $row = $result->fetch_assoc() ){ ?>
@@ -43,11 +42,6 @@ include('header.php'); /* contains the doctype through </header> */
 	<?php 
 		} //end while loop
 		$result->free();
-	?>
-
-	<a href="blog.php" class="button">Read the rest of my blog&hellip;</a>
-
-	<?php
 	} //end if posts found 
 	else{
 		echo 'No posts found';
