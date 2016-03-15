@@ -19,7 +19,9 @@
 			//loop it once per post
 			while( $row_latest = $result_latest->fetch_assoc() ){ ?>
 			<li>
-			<a href="#"><?php echo $row_latest['title']; ?></a> 
+			<a href="single.php?post_id=<?php echo $row_latest['post_id'] ?>">
+			<?php echo $row_latest['title']; ?>
+			</a> 
 			<?php count_comments($row_latest['post_id']); ?>
 			</li>
 			<?php 

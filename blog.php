@@ -29,7 +29,7 @@ include('header.php'); /* contains the doctype through </header> */
 		//loop through the posts that it found
 		while( $row = $result->fetch_assoc() ){ ?>
 		<article>
-			<h3><?php echo $row['title']; ?></h3>
+			<h3><a href="single.php?post_id=<?php echo $row['post_id']; ?>"><?php echo $row['title']; ?></a></h3>
 			<div class="post-meta">				
 				Posted <?php echo nice_date($row['date']); ?> 
 				by <?php echo $row['username'] ?> |  
