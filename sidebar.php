@@ -1,4 +1,9 @@
 <aside>
+	<form action="search.php" method="get">
+		<input type="text" name="phrase" placeholder="Search...">
+		<input type="submit" value="Search">
+	</form>
+
 	<?php //get the titles of up to 5 latest published posts, 
 		//and count the comments on each post
 		//@TODO!  change the JOIN so that posts with ZERO comments don't disappear
