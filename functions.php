@@ -5,6 +5,12 @@ function nice_date( $datetime ){
 	return $date->format( 'l, F j' );
 }
 
+//convert datetime format to RFC 822 format for the feed
+function rss_date( $datetime ){
+	$date = new DateTime( $datetime );
+	return $date->format( 'r' );
+}
+
 //count the comments on ANY one post
 //$post_id = INT - the post you are counting comments for
 function count_comments( $post_id ){

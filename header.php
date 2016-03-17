@@ -6,6 +6,8 @@
 	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Lato:400,300,700' rel='stylesheet' type='text/css'>
 
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
+
+	<link rel="alternate" type="application/rss+xml" href="rss.php">
 </head>
 <body>
 	<header>
