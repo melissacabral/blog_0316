@@ -92,10 +92,10 @@ if( $_POST['did_login'] ){
 <head>
 	<meta charset="utf-8">
 	<title>Log In to your account</title>
-	<link rel="stylesheet" type="text/css" href="styles/normalize.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo ROOT_URL; ?>/admin/styles/normalize.css">
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,400italic">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="admin/styles/admin-style.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo ROOT_URL; ?>/admin/styles/admin-style.css">
 </head>
 <body class="login">
 	
