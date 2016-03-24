@@ -120,5 +120,24 @@ function most_popular_post( $user_id ){
 	}
 }
 
+/**
+ * Helper for checking a checkbox if two values match
+ */
+function checked( $thing1, $thing2 ){
+	if( $thing1 == $thing2 ){
+		echo 'checked';
+	}
+}
+
+/**
+ * Helper for selecting an option in a dropdown if two values match
+ */
+function selected( $thing1, $thing2 ){
+	if( $thing1 == $thing2 ){
+		echo 'selected';
+	}
+}
+
+
 
 //no close php
