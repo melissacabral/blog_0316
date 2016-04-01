@@ -138,6 +138,32 @@ function selected( $thing1, $thing2 ){
 	}
 }
 
+/**
+ * Show any user's userpic at any size
+ */
+function show_userpic( $user_id, $size = 'thumb' ){
+	//get the userpic from the DB
+	global $db;
+	$query = "SELECT userpic FROM users
+				WHERE user_id = $user_id
+				LIMIT 1";
+	$result = $db->query($query);
+	if(! $result){
+		echo $db->error;
+	}
+	if($result->num_rows == 1){
+		//display the userpic if they have one, otherwise show the default userpic
+		$row = $result->fetch_assoc();
+		if($row['userpic'] == ''){
+			echo '<img class="default-userpic userpic" src="' . ROOT_URL . '/images/default_user.jpeg" 
+						alt="default userpic">';
+		}else{
+			echo '<img class="userpic" src="' . ROOT_URL . '/uploads/'. $row['userpic'] . '_' . $size . '.jpg" alt="userpic">';
+		}
+
+	}
+}
+
 
 
 //no close php

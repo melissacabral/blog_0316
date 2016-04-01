@@ -4,6 +4,9 @@ include_once( ROOT_PATH . '/functions.php' );
 require( ROOT_PATH . '/admin/admin-header.php' ); 
 include( ROOT_PATH . '/admin/admin-nav.php' );
 
+//which post are we editing? the URL looks like admin-edit.php?post_id=x
+$post_id = $_GET['post_id'];
+
 //parse the form
 if( $_POST['did_post'] ){
     //extract and sanitize
@@ -32,13 +35,18 @@ if( $_POST['did_post'] ){
         $valid = false;
         $errors[] = 'Please choose a valid category';
     }
-    //if valid, add to DB
+    //if valid, update the row in the DB
     if($valid){
-        $query = "INSERT INTO posts
-        ( title, date, body, user_id, category_id, is_published, allow_comments )
-        VALUES
-        ( '$title', now(), '$body', " . USER_ID . " , $category_id, $is_published, 
-            $allow_comments ) ";
+        $query = "UPDATE posts
+                    SET
+                    title           = '$title',
+                    body            = '$body',
+                    is_published    = $is_published,
+                    allow_comments  = $allow_comments,
+                    category_id     = $category_id
+                    WHERE post_id = $post_id
+                    AND user_id = " . USER_ID ;
+
         $result = $db->query($query);
         if(! $result){
             echo $db->error;
@@ -48,8 +56,8 @@ if( $_POST['did_post'] ){
             $message = 'Success! Your post was saved';
             $status = 'success';
         }else{
-            $message = 'Sorry, Your post was not saved.';
-            $status = 'error';
+            $message = 'No changes were made.';
+            $status = 'information';
         }
     }//end if valid
     else{
@@ -58,10 +66,39 @@ if( $_POST['did_post'] ){
     }
     
 }//end of parser
+
+
+//get all the info about this post, and make sure the post was written by the logged in user
+$query_post = "SELECT * 
+                FROM posts 
+                WHERE user_id = " . USER_ID . 
+                " AND post_id = $post_id 
+                LIMIT 1";
+$result_post = $db->query($query_post);
+
 ?>  
 <main role="main">
     <section class="important panel">
-        <h2>Write New Post</h2>
+
+        <?php //kill the page if viewing an invalid post
+        if( ! $result_post ){
+            echo $db->error;
+        } 
+        if( $result_post->num_rows != 1 ){
+            die('You do not have permission to edit that post.');
+        } 
+
+        //get the info from the DB result
+        $row_post = $result_post->fetch_assoc();
+        
+        $title = $row_post['title'];
+        $body = $row_post['body'];
+        $is_published = $row_post['is_published'];
+        $allow_comments = $row_post['allow_comments'];
+        $category_id = $row_post['category_id'];
+        ?>
+
+        <h2>Edit Post</h2>
 
         <?php //show feedback if the form was submitted
         if( $_POST['did_post'] ){
@@ -79,11 +116,11 @@ if( $_POST['did_post'] ){
 
             echo '</div>';
         } ?>
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>?post_id=<?php echo $post_id; ?>" method="post">
             <div class="twothirds">
                 <label>Title:</label>
                 <input type="text" name="title" 
-                    value="<?php echo stripslashes($title); ?>">
+                value="<?php echo stripslashes($title); ?>">
 
                 <label>Body:</label>
                 <textarea name="body"><?php echo stripslashes($body); ?></textarea>
@@ -101,31 +138,31 @@ if( $_POST['did_post'] ){
 
                 <?php //get all the categories in alphabetical order 
                 $query = "SELECT * FROM categories
-                        ORDER BY name ASC";
+                ORDER BY name ASC";
                 $result = $db->query($query);
                 if(! $result){
                     echo $db->error;
                 }
                 if($result->num_rows >= 1){
-                ?>
-                <label>Category:</label>
-                <select name="category_id">
-                    <?php while( $row = $result->fetch_assoc() ){ ?>
+                    ?>
+                    <label>Category:</label>
+                    <select name="category_id">
+                        <?php while( $row = $result->fetch_assoc() ){ ?>
 
-                    <option value="<?php echo $row['category_id']; ?>" <?php selected( $category_id, $row['category_id'] ); ?>>
-                        <?php echo $row['name']; ?>
-                    </option>
+                        <option value="<?php echo $row['category_id']; ?>" <?php selected( $category_id, $row['category_id'] ); ?>>
+                            <?php echo $row['name']; ?>
+                        </option>
 
-                    <?php }//end while ?>
-                </select>
-                <?php }//end if there are cats ?>
+                        <?php }//end while ?>
+                    </select>
+                    <?php }//end if there are cats ?>
 
-                <input type="submit" value="Save Post">
-                <input type="hidden" name="did_post" value="1">
-            </div>
-        </form>
-    </section>
-</main>
-<?php 
+                    <input type="submit" value="Save Post">
+                    <input type="hidden" name="did_post" value="1">
+                </div>
+            </form>
+        </section>
+    </main>
+    <?php 
 // </body> and </html> are in the footer!
-include(ROOT_PATH . '/admin/admin-footer.php'); ?>
+    include(ROOT_PATH . '/admin/admin-footer.php'); ?>

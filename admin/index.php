@@ -7,6 +7,8 @@ include( ROOT_PATH . '/admin/admin-nav.php' ); ?>
 <main role="main">
     <section class="panel important">
         <h2>Welcome to Your Dashboard, <?php echo USERNAME; ?></h2>
+
+        <?php show_userpic(USER_ID, 'medium'); ?>
         <ul>
             <li>Account type: <?php echo IS_ADMIN == 1 ? 'Administrator' : 'Commenter'; ?></li>            
         </ul>
