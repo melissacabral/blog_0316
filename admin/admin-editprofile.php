@@ -70,7 +70,23 @@ if($_POST['did_upload']){
         }//end foreach
 
         //if it saved the file, add it to the DB
-        if($did_save){      
+        if($did_save){
+
+            //DELETE OLD FILE
+            //look up the old image name
+            $query_oldfile = "SELECT userpic FROM users where user_id = " . USER_ID . " LIMIT 1";
+            $result_oldfile = $db->query($query_oldfile);
+            if($result_oldfile->num_rows == 1){
+                $row_oldfile = $result_oldfile->fetch_assoc();
+                //delete old files
+                foreach ($sizes as $size_name => $size_width) {
+                   $old_file = ROOT_PATH . '/uploads/' . $row_oldfile['userpic'] . '_' . $size_name . '.jpg'  ;
+                  //Delete the file from the directory with unlink()
+                  @unlink($old_file);
+                }              
+            }
+            //END DELETE OLD FILE
+
 
             //add this userpic for the logged in person
             $query = "UPDATE users
